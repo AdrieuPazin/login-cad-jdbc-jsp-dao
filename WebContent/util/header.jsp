@@ -1,6 +1,7 @@
 <link href="./css/bootstrap.min.css" rel="stylesheet">
+<link href="./css/header.css" rel="stylesheet">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 	<a class="navbar-brand" href="home.jsp">Logo</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse"
 		data-target="#navbarNav" aria-controls="navbarNav"
