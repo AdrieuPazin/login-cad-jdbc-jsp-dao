@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.impl.UsersDaoJDBC;
-import db.DB;
+import dao.DaoFactory;
+import dao.UsersDao;
 import entities.Users;
 
 /**
@@ -50,9 +50,9 @@ public class Login extends HttpServlet {
 		String pass = request.getParameter("frmLoginPass");
 		
 		
-		UsersDaoJDBC userJDBC = new UsersDaoJDBC(DB.getConnection());
-		Users userDao = userJDBC.findByLogin(email, pass);
-		if (userDao != null && userDao.getEmail().equals(email) && userDao.getPass().equals(pass)) {
+		UsersDao userDao = DaoFactory.createUsersDao();
+		Users user = userDao.findByLogin(email, pass);
+		if (user != null && user.getEmail().equals(email) && user.getPass().equals(pass)) {
 		
 			HttpSession session = request.getSession();
 			session.setAttribute("email", email);
