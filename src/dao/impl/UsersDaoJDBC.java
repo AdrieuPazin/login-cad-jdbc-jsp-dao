@@ -152,7 +152,7 @@ public class UsersDaoJDBC implements UsersDao {
 
 		try {
 
-			String sql = "SELECT * FROM users";
+			String sql = "SELECT * FROM users ORDER BY email";
 
 			st = conn.prepareStatement(sql);
 			rs = st.executeQuery();
@@ -217,6 +217,17 @@ public class UsersDaoJDBC implements UsersDao {
 			DB.closeResultSet(rs);
 		}
 
+	}
+	
+	@Override
+	public void saveUser(Users user) {
+		
+		if(user.getId() != null && user.getId() > 0 ) {
+			update(user);
+		} else {
+			insert(user);
+		}
+		
 	}
 
 }

@@ -20,7 +20,7 @@
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a class="dropdown-item" href="./seller.jsp">Vendedor</a> 
 					<a class="dropdown-item" href="./department.jsp">Departamento</a>
-					<a class="dropdown-item" href="./users.jsp">Atualizar Usuário</a>
+					<a class="dropdown-item" href="UsersController">Atualizar Usuário</a>
 
 				</div></li>
 			<li class="nav-item"><a class="nav-link" href="logout.jsp">Sair</a>

@@ -12,6 +12,7 @@ public interface UsersDao {
 	Users findById(int id);
 	List<Users> findAll();
 	Users findByLogin(String email, String pass);
+	void saveUser(Users user);
 	
 
 }
