@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import dao.DaoFactory;
 import dao.UsersDao;
@@ -98,7 +97,6 @@ public class UsersController extends HttpServlet {
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		//doGet(request, response);
 		
 		String acao = request.getParameter("acao");
@@ -125,9 +123,7 @@ public class UsersController extends HttpServlet {
 			if (acao.equals("adicionar_proc")) {
 				
 				String email = request.getParameter("frmUserEmail");
-				String pass = request.getParameter("frmUserPass");
-				
-				
+				String pass = request.getParameter("frmUserPass");			
 				
 				Users user = new Users();
 				user.setEmail(email);

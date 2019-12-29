@@ -20,7 +20,7 @@
 				<tr>
 					<th scope="col">Id</th>
 					<th scope="col">E-mail</th>
-					<th scopr="col">  </th>
+					<th scope="col">  </th>
 					<th scope="col"> 
 							<a href="UsersController?acao=add" class="btn btn-primary " role="button" aria-pressed="true">Inserir Usuário</a>
 					</th>
@@ -45,7 +45,7 @@
 						<a href="UsersController?acao=edit&id=<%=u.getId() %>" class="btn btn-warning " role="button" aria-pressed="true">Editar</a>
 					</td>
 					<td>
-						<a href="UsersController?acao=exc&id=<%=u.getId() %>" class="btn btn-danger " role="button" aria-pressed="true">Excluir</a>
+						<a href="javascript:del(<%= u.getId() %>)" class="btn btn-danger " role="button" aria-pressed="true">Excluir</a>
 					</td>
 				</tr>
 
@@ -64,5 +64,8 @@
 	</div>
 
 	<%@include file="./util/footer.jsp"%>
+	
+	<script type="text/javascript" src="./js/validacao.js"></script>	
+	
 </body>
 </html>
