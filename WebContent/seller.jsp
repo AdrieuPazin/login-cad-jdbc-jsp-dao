@@ -1,3 +1,5 @@
+<%@page import="entities.Seller"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -10,38 +12,41 @@
 
 	<%@include file="./util/header.jsp"%>
 
-	<h1>Pagina Seller</h1>
 
 	<div class="container">
+		<h1 class="text-center">Pagina Seller</h1>
 
 		<table class="table table-striped table-hover">
 			<thead class="thead-dark">
 				<tr>
-					<th scope="col">#</th>
+					<th scope="col">id</th>
 					<th scope="col">Nome</th>
 					<th scope="col">E-mail</th>
+					<th scope="col">Data de Nascimento</th>
 					<th scope="col">Salário Base</th>
+					<th scope="col">Departamento</th>
 				</tr>
 			</thead>
+			
+	<%
+		int i = 1;
+		List<Seller> lista = (List<Seller>) request.getAttribute("lista");
+		for(Seller s: lista){
+	
+	%>
+			
 			<tbody>
 				<tr>
-					<th scope="row">1</th>
-					<td>Mark</td>
-					<td>Otto</td>
-					<td>@mdo</td>
+					<th scope="row"><%=i%></th>
+					<td><%=s.getName() %></td>
+					<td><%=s.getEmail() %></td>
+					<td><%=s.getBirthDate() %></td>
+					<td><%=s.getBaseSalary() %></td>
+					<td><%=s.getDepartment().getName() %></td>
 				</tr>
-				<tr>
-					<th scope="row">2</th>
-					<td>Jacob</td>
-					<td>Thornton</td>
-					<td>@fat</td>
-				</tr>
-				<tr>
-					<th scope="row">3</th>
-					<td>Larry</td>
-					<td>the Bird</td>
-					<td>@twitter</td>
-				</tr>
+	<% i++;
+		}
+	%>
 			</tbody>
 		</table>
 
