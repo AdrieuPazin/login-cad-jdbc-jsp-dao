@@ -15,6 +15,7 @@ import db.DB;
 import db.DbException;
 import entities.Department;
 import entities.Seller;
+import entities.Users;
 
 public class SellerDaoJDBC implements SellerDao {
 
@@ -45,7 +46,7 @@ public class SellerDaoJDBC implements SellerDao {
 				ResultSet rs = st.getGeneratedKeys();
 				if (rs.next()) {
 
-					seller.setId(rs.getInt("Id"));
+					seller.setId(rs.getInt(1));
 
 				}
 
@@ -264,6 +265,16 @@ public class SellerDaoJDBC implements SellerDao {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
+	}
+
+	@Override
+	public void saveSeller(Seller seller) {
+		if(seller.getId() != null && seller.getId() > 0 ) {
+			update(seller);
+		} else {
+			insert(seller);
+		}
+		
 	}
 
 }

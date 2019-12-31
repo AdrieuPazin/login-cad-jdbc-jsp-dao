@@ -45,7 +45,7 @@
 						<a href="UsersController?acao=edit&id=<%=u.getId() %>" class="btn btn-warning " role="button" aria-pressed="true">Editar</a>
 					</td>
 					<td>
-						<a href="javascript:del(<%= u.getId() %>)" class="btn btn-danger " role="button" aria-pressed="true">Excluir</a>
+						<a href="javascript:delUser(<%= u.getId() %>)" class="btn btn-danger " role="button" aria-pressed="true">Excluir</a>
 					</td>
 				</tr>
 

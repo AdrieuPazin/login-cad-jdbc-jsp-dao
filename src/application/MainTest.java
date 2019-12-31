@@ -3,7 +3,9 @@ package application;
 import java.util.List;
 
 import dao.DaoFactory;
+import dao.DepartmentDao;
 import dao.UsersDao;
+import entities.Department;
 import entities.Users;
 
 public class MainTest {
@@ -21,9 +23,9 @@ public class MainTest {
 		user = userDao.findById(1);
 		System.out.println(user + "\n------------------------------------\n");
 		
-		Users user2 = new Users();
-		user2 = userDao.findById(3);
-		user2.setPass("321");
+//		Users user2 = new Users();
+//		user2 = userDao.findById(3);
+//		user2.setPass("321");
 //		userDao.update(user2);
 //		userDao.insert(user2);
 //		System.out.println("INSERT \n");
@@ -38,6 +40,13 @@ public class MainTest {
 		
 		System.out.println("DELETE BY ID\n");
 //		userDao.deleteById(2);
+		
+		System.out.println("\n\ndepartment\n");
+		DepartmentDao depDao = DaoFactory.createDepartmentDao();
+		List<Department> listDepartment = depDao.findAll();
+		for (Department dep : listDepartment) {
+			System.out.println(dep + " \n");
+		}
 
 	}
 

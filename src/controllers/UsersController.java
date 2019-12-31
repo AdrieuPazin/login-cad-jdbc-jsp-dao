@@ -13,26 +13,18 @@ import javax.servlet.http.HttpServletResponse;
 import dao.DaoFactory;
 import dao.UsersDao;
 import entities.Users;
-/**
- * Servlet implementation class Users
- */
+
 @WebServlet("/UsersController")
 public class UsersController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+ 
     public UsersController() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		String acao = request.getParameter("acao");
@@ -97,7 +89,6 @@ public class UsersController extends HttpServlet {
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//doGet(request, response);
 		
 		String acao = request.getParameter("acao");
 			if (acao.equals("edit_proc")) {

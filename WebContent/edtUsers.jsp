@@ -20,10 +20,10 @@
 				
 		%>		
 		<h1><%="Editar Usuário"%></h1>
-				<form name="frmEdtUser" action="UsersController?acao=edit_proc" method="POST" onsubmit="return validarDados()? true : false">
+				<form name="frmEdtUser" action="UsersController?acao=edit_proc" method="POST" onsubmit="return validarDadosUsers()? true : false">
 				
 					<div class="form-group">
-				    <input hidden type="text" class="form-control" id="idfrmUserId" name = "frmUserId" placeholder="Entre com seu e-mail" value="<%= user.getId()%>">
+				    <input hidden type="text" class="form-control" id="idfrmUserId" name = "frmUserId" value="<%= user.getId()%>">
 				  </div>
 				  <div class="form-group">
 				    <label >E-mail</label>
@@ -51,7 +51,7 @@
 		%>
 		
 		<h1><%="Cadastrar Usuário"%></h1>
-				<form name="frmEdtUser"action="UsersController?acao=adicionar_proc" method="POST" onsubmit="return validarDados()? true : false">				
+				<form name="frmEdtUser"action="UsersController?acao=adicionar_proc" method="POST" onsubmit="return validarDadosUsers()? true : false">				
 				  <div class="form-group">
 				    <label >E-mail</label>
 				    <input type="email" class="form-control" id="idfrmUserEmail" name = "frmUserEmail" placeholder="Entre com seu e-mail" >
