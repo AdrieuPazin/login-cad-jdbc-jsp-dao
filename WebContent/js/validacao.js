@@ -35,6 +35,17 @@ function validarDadosSellers() {
 	
 }
 
+function validarDadosDepartment() {
+	var nome = document.getElementById("idfrmDepartmentName").value;
+	if (nome == "") {
+		alert("informe o nome do Departamento!");
+		frmEdtDepartment.frmDepartmentName.focus();
+		return false
+	}
+	return true;
+	
+}
+
 function delUser(codigo) {  
     if (confirm('Deseja realmente excluir este registro?')) {  
         location.href = 'UsersController?acao=exc&id=' + codigo;
@@ -44,6 +55,12 @@ function delUser(codigo) {
 function delSeller(codigo) {  
     if (confirm('Deseja realmente excluir este registro?')) {  
         location.href = 'SellerController?acao=exc&id=' + codigo;
+    }
+}
+
+function delDepartment(codigo) {  
+    if (confirm('Deseja realmente excluir este registro?')) {  
+        location.href = 'DepartmentController?acao=exc&id=' + codigo;
     }
 }
 

@@ -14,7 +14,7 @@
 
 
 	<div class="container text-center">
-		<h1>Pagina Seller</h1>
+		<h1>Página Vendedores</h1>
 
 		<table class="table table-striped table-hover">
 			<thead class="thead-dark">
@@ -26,7 +26,7 @@
 					<th scope="col">Salário Base</th>
 					<th scope="col">Departamento</th>
 					<th scope="col"></th>
-					<th scope="col"><a href="SellerController?acao=add" class="btn btn-primary " role="button" aria-pressed="true">Adiconar Vendedor</a></th>
+					<th scope="col"><a href="SellerController?acao=add" class="btn btn-primary " role="button" aria-pressed="true">Adicionar Vendedor</a></th>
 				</tr>
 			</thead>
 			

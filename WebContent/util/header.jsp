@@ -19,7 +19,7 @@
 				aria-expanded="false"> CADASTROS </a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a class="dropdown-item" href="SellerController">Vendedor</a> 
-					<a class="dropdown-item" href="./department.jsp">Departamento</a>
+					<a class="dropdown-item" href="DepartmentController">Departamento</a>
 					<a class="dropdown-item" href="UsersController">Atualizar Usuário</a>
 
 				</div></li>

@@ -80,7 +80,7 @@ public class SellerDaoJDBC implements SellerDao {
 			st.setInt(5, seller.getDepartment().getId());
 			st.setInt(6, seller.getId());
 
-			int row = st.executeUpdate();
+			st.executeUpdate();
 			
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
