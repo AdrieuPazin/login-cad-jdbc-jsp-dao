@@ -1,7 +1,11 @@
 package entities;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import db.DbException;
 
 public class Seller implements Serializable{
 
@@ -121,7 +125,16 @@ public class Seller implements Serializable{
 	}
 	
 	
-	
+	public Date retornaDate(String data) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		try {
+			setBirthDate(sdf.parse(data));
+			return getBirthDate();
+		} catch (ParseException e) {
+			throw new DbException(e.getMessage());
+		}
+	}
 	
 	
 }

@@ -44,7 +44,7 @@
 					<td><%=s.getName() %></td>
 					<td><%=s.getEmail() %></td>
 					<td><%=s.getBirthDate() %></td>
-					<td><%=s.getBaseSalary() %></td>
+					<td>R$ <%=s.getBaseSalary() %></td>
 					<td><%=s.getDepartment().getName() %></td>
 					<td><a href="SellerController?acao=edit&id=<%= s.getId() %>" class="btn btn-warning " role="button" aria-pressed="true">Editar</a></td>
 					<td><a href="javascript:delSeller(<%= s.getId() %>)" class="btn btn-danger " role="button" aria-pressed="true">Excluir</a></td>

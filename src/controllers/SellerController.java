@@ -1,6 +1,8 @@
 package controllers;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -104,13 +106,14 @@ public class SellerController extends HttpServlet {
 		
 		String acao = request.getParameter("acao");
 		
+		
 		if (acao.equals("edit_proc")) {
 			
 			
 			Integer id = Integer.parseInt(request.getParameter("frmSellerId"));
 			String nome = request.getParameter("frmSellerName");
 			String email = request.getParameter("frmSellerEmail");
-			//Date birthDate = request.getParameter("frmSellerBirthDate");
+			String birthDate = request.getParameter("frmSellerBirthDate");
 			String baseSalary = request.getParameter("frmSellerBaseSalary");
 			Integer departmentId = Integer.parseInt(request.getParameter("selectSellerDepartment"));
 			
@@ -122,7 +125,8 @@ public class SellerController extends HttpServlet {
 			seller.setId(id);
 			seller.setName(nome);
 			seller.setEmail(email);
-			seller.setBirthDate( new Date());
+			//seller.setBirthDate( new Date());
+			seller.setBirthDate(seller.retornaDate(birthDate));
 			seller.setBaseSalary(Double.parseDouble(baseSalary));
 			seller.setDepartment(dep);
 			
@@ -140,7 +144,7 @@ public class SellerController extends HttpServlet {
 			
 			String nome = request.getParameter("frmSellerName");
 			String email = request.getParameter("frmSellerEmail");
-			//Date birthDate = request.getParameter("frmSellerBirthDate");
+			String birthDate = request.getParameter("frmSellerBirthDate");
 			String baseSalary = request.getParameter("frmSellerBaseSalary");
 			Integer departmentId = Integer.parseInt(request.getParameter("selectSellerDepartment"));
 			
@@ -151,7 +155,7 @@ public class SellerController extends HttpServlet {
 			Seller seller = new Seller();
 			seller.setName(nome);
 			seller.setEmail(email);
-			seller.setBirthDate( new Date());
+			seller.setBirthDate(seller.retornaDate(birthDate));
 			seller.setBaseSalary(Double.parseDouble(baseSalary));
 			seller.setDepartment(dep);
 			
