@@ -13,7 +13,12 @@
 
 
 	<div class="container text-center">
-
+	<%
+		String msg = (String) request.getAttribute("mensagem");
+		if(msg!=null){
+			out.println(msg);
+		}
+	%>
 		<h1 class="text-center">Pagina Usuários</h1>
 		<table class="table table-striped table-hover">
 			<thead class="thead-dark">

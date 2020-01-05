@@ -10,6 +10,7 @@ public interface UsersDao {
 	void update(Users user);
 	void deleteById(int id);
 	Users findById(int id);
+	boolean findByEmail(String email);
 	List<Users> findAll();
 	Users findByLogin(String email, String pass);
 	void saveUser(Users user);

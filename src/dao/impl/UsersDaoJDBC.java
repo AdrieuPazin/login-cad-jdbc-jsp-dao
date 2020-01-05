@@ -222,12 +222,42 @@ public class UsersDaoJDBC implements UsersDao {
 	@Override
 	public void saveUser(Users user) {
 		
-		if(user.getId() != null && user.getId() > 0 ) {
+		if(user.getId() != null && user.getId() > 0 && findByEmail(user.getEmail()) == false) {
 			update(user);
-		} else {
+		} else if (findByEmail(user.getEmail()) == false) {
 			insert(user);
 		}
 		
+	}
+
+	@Override
+	public boolean findByEmail(String email) {
+
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+
+			String sql = "SELECT * FROM users WHERE email = ?";
+
+			st = conn.prepareStatement(sql);
+			st.setString(1, email);
+			rs = st.executeQuery();
+
+			if (rs.next()) {
+
+				inicializaUsers(rs);
+				return true;
+			}
+
+			return false ;
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 
 }

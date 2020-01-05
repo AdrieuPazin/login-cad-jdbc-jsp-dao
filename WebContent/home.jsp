@@ -10,8 +10,10 @@
 
 <%@include file="./util/header.jsp" %>
 
-	<h1>LOGADO</h1>
-
+	<%
+		String msg = (String) request.getAttribute("mensagem");
+	%>
+	<%=msg%>
 	
 
 <%@include file="./util/footer.jsp" %>

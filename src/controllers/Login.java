@@ -3,6 +3,7 @@ package controllers;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -51,9 +52,27 @@ public class Login extends HttpServlet {
 			session.setAttribute("pass", user.getPass());
 			session.setAttribute("id", user.getId());
 			
-			response.sendRedirect("home.jsp");
-		} else {
-			out.println("Login inválido!");
+			String mensagem = "<div class=\"alert alert-success alert-dismissible fade show\" role=\"alert\">\n" + 
+					"  Logado com sucesso\n" + 
+					"  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" + 
+					"    <span aria-hidden=\"true\">&times;</span>\n" + 
+					"  </button>\n" + 
+					"</div>";
+			request.setAttribute("mensagem", mensagem);
+			RequestDispatcher rq = request.getRequestDispatcher("home.jsp");
+			rq.forward(request, response);
+			
+			//response.sendRedirect("home.jsp");
+		} else {			
+			String mensagem =  "<div class=\"alert alert-danger alert-dismissible fade show\" role=\"alert\">\n" + 
+					"  Login não encontrado!\n" + 
+					"  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" + 
+					"    <span aria-hidden=\"true\">&times;</span>\n" + 
+					"  </button>\n" + 
+					"</div>";
+			request.setAttribute("mensagem", mensagem);
+			RequestDispatcher rq = request.getRequestDispatcher("login.jsp");
+			rq.forward(request, response);
 		}
 	}
 

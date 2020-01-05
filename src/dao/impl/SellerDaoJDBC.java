@@ -15,7 +15,6 @@ import db.DB;
 import db.DbException;
 import entities.Department;
 import entities.Seller;
-import entities.Users;
 
 public class SellerDaoJDBC implements SellerDao {
 
@@ -269,12 +268,44 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void saveSeller(Seller seller) {
-		if(seller.getId() != null && seller.getId() > 0 ) {
+		if(seller.getId() != null && seller.getId() > 0 && findByEmail(seller.getEmail()) == false) {
 			update(seller);
-		} else {
+		} else if (findByEmail(seller.getEmail()) == false) {
 			insert(seller);
 		}
 		
+	}
+
+	@Override
+	public boolean findByEmail(String email) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			String sql = "SELECT seller.*,department.Name as DepName " + 
+					"FROM seller INNER JOIN department " + 
+					"ON seller.DepartmentId = department.Id " + 
+					"WHERE seller.Email = ?";
+			
+			st = conn.prepareStatement(sql);
+			st.setString(1, email);
+			rs = st.executeQuery();
+			
+			//testando se veio algum resultado, se true pega os dados do result e instancia os objetos
+			if (rs.next()) {
+				return true;	
+			}
+			
+			return false;
+			
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 
 }
