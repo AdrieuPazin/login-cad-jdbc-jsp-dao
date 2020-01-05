@@ -45,7 +45,18 @@
 						<a href="UsersController?acao=edit&id=<%=u.getId() %>" class="btn btn-warning " role="button" aria-pressed="true">Editar</a>
 					</td>
 					<td>
-						<a href="javascript:delUser(<%= u.getId() %>)" class="btn btn-danger " role="button" aria-pressed="true">Excluir</a>
+						<%
+							if(session.getAttribute("email").equals(u.getEmail())){
+						%>
+								<a href="#" class="btn btn-secondary" role="button" aria-pressed="true">Excluir</a>
+						<% 
+							} else{
+						%>
+								<a href="javascript:delUser(<%= u.getId() %>)" class="btn btn-danger " role="button" aria-pressed="true">Excluir</a>
+						<%
+							}
+						%>
+					
 					</td>
 				</tr>
 

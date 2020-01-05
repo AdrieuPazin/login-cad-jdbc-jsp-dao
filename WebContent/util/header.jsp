@@ -1,3 +1,5 @@
+<%@include file="sessionValidation.jsp" %>
+
 <link href="./css/bootstrap.min.css" rel="stylesheet">
 <link href="./css/header.css" rel="stylesheet">
 
@@ -18,9 +20,9 @@
 				role="button" data-toggle="dropdown" aria-haspopup="true"
 				aria-expanded="false"> CADASTROS </a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="SellerController">Vendedor</a> 
-					<a class="dropdown-item" href="DepartmentController">Departamento</a>
-					<a class="dropdown-item" href="UsersController">Atualizar Usuário</a>
+					<a class="dropdown-item" href="SellerController">Vendedores</a> 
+					<a class="dropdown-item" href="DepartmentController">Departamentos</a>
+					<a class="dropdown-item" href="UsersController">Usuários</a>
 
 				</div></li>
 			<li class="nav-item"><a class="nav-link" href="logout.jsp">Sair</a>

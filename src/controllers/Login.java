@@ -44,10 +44,12 @@ public class Login extends HttpServlet {
 		
 		UsersDao userDao = DaoFactory.createUsersDao();
 		Users user = userDao.findByLogin(email, pass);
-		if (user != null && user.getEmail().equals(email) && user.getPass().equals(pass)) {
+		if (user != null && user.getEmail().equals(email.trim()) && user.getPass().equals(pass)) {
 		
 			HttpSession session = request.getSession();
-			session.setAttribute("email", email);
+			session.setAttribute("email", user.getEmail());
+			session.setAttribute("pass", user.getPass());
+			session.setAttribute("id", user.getId());
 			
 			response.sendRedirect("home.jsp");
 		} else {
