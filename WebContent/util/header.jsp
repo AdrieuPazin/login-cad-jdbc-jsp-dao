@@ -26,7 +26,14 @@
 
 				</div></li>
 			<li class="nav-item"><a class="nav-link" href="logout.jsp">Sair</a>
-			</li>
+			</li>			
 		</ul>
 	</div>
+	<div class="float-right">
+		<span class="navbar-text">
+     			 Bem vindo, <%=session.getAttribute("email") %>
+    	</span>
+	
+	</div>
+	
 </nav>
