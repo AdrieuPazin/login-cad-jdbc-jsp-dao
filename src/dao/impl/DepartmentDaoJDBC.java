@@ -71,7 +71,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 			st.setString(1, dep.getName());
 			st.setInt(2, dep.getId());
 			
-			int row = st.executeUpdate();
+			st.executeUpdate();
 			
 					
 		} catch (SQLException e) {

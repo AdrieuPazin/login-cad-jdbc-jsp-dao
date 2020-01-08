@@ -12,8 +12,13 @@
 
 	<%
 		String msg = (String) request.getAttribute("mensagem");
+		
+		if(msg != null){
+			out.println(msg);
+		}
+		
 	%>
-	<%=msg%>
+	
 	
 
 <%@include file="./util/footer.jsp" %>
