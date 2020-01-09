@@ -30,6 +30,8 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 		
 		try {
 			
+			conn.setAutoCommit(false);
+			
 			String sql = "INSERT INTO department (Name) VALUES (?)";
 			
 			st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -42,13 +44,19 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 				if (rs.next()) {
 					dep.setId(rs.getInt(1));
 				}
+				conn.commit();
 				DB.closeResultSet(rs);
 			} else {
 				throw new DbException("Erro inexperado!");
 			}
 			
 		} catch (SQLException e) {
-			throw new DbException(e.getMessage());
+			try {
+				conn.rollback();
+				throw new DbException("Erro ao inserir registro! Voltado alterações.  " + e.getMessage());
+			} catch (SQLException e1) {
+				throw new DbException("Erro ao voltar alterações! "+ e1.getMessage());
+			}
 		} finally {
 			DB.closeStatement(st);
 		}
@@ -64,6 +72,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 		
 		try {
 			
+			conn.setAutoCommit(false);
 			
 			String sql = "UPDATE department SET Name = ? WHERE Id = ?";
 			
@@ -71,11 +80,19 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 			st.setString(1, dep.getName());
 			st.setInt(2, dep.getId());
 			
-			st.executeUpdate();
+			int row = st.executeUpdate();
 			
+			if (row > 0) {
+				conn.commit();
+			}
 					
 		} catch (SQLException e) {
-			throw new DbException(e.getMessage()); 
+			try {
+				conn.rollback();
+				throw new DbException("Erro ao alterar registro! Voltado alterações.  " + e.getMessage());
+			} catch (SQLException e1) {
+				throw new DbException("Erro ao voltar alterações! "+ e1.getMessage());
+			}
 		} finally {
 			DB.closeStatement(st);
 		}
@@ -91,6 +108,8 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 		
 		try {
 			
+			conn.setAutoCommit(false);
+			
 			String sql = "DELETE FROM department WHERE Id = ?";
 			
 			st = conn.prepareStatement(sql);
@@ -100,10 +119,17 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 			
 			if (row == 0) {
 				throw new DbException("Erro ao excluir registro!");
+			} else {
+				conn.commit();
 			}
 			
 		} catch (SQLException e) {
-			throw new DbException(e.getMessage());
+			try {
+				conn.rollback();
+				throw new DbException("Erro ao deletar registro! Voltado alterações.  " + e.getMessage());
+			} catch (SQLException e1) {
+				throw new DbException("Erro ao voltar alterações! "+ e1.getMessage());
+			}
 		} DB.closeStatement(st);
 		
 		

@@ -30,6 +30,8 @@ public class UsersDaoJDBC implements UsersDao {
 
 		try {
 
+			conn.setAutoCommit(false);	
+			
 			String sql = "INSERT INTO users (email, pass) VALUES (?, ?)";
 
 			st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -42,13 +44,19 @@ public class UsersDaoJDBC implements UsersDao {
 				if (rs.next()) {
 					user.setId(rs.getInt(1));
 				}
+				conn.commit();
 				DB.closeResultSet(rs);
 			} else {
 				throw new DbException("Erro inesperado");
 			}
 
 		} catch (Exception e) {
-			throw new DbException(e.getMessage());
+			try {
+				conn.rollback();
+				throw new DbException("Erro ao inserir registro! Voltado alterações.  " + e.getMessage());
+			} catch (SQLException e1) {
+				throw new DbException("Erro ao voltar alterações! "+ e1.getMessage());
+			}
 		} finally {
 			DB.closeStatement(st);
 		}
@@ -61,6 +69,8 @@ public class UsersDaoJDBC implements UsersDao {
 
 		try {
 
+			conn.setAutoCommit(false);
+			
 			String sql = "UPDATE users SET email = ?, pass = ? WHERE Id = ?";
 
 			st = conn.prepareStatement(sql);
@@ -68,10 +78,19 @@ public class UsersDaoJDBC implements UsersDao {
 			st.setString(2, user.getPass());
 			st.setInt(3, user.getId());
 
-			st.executeUpdate();
+			int row = st.executeUpdate();
 
+			if (row > 0) {
+				conn.commit();
+			}
+			
 		} catch (SQLException e) {
-			throw new DbException(e.getMessage());
+			try {
+				conn.rollback();
+				throw new DbException("Erro ao alterar registro! Voltado alterações.  " + e.getMessage());
+			} catch (SQLException e1) {
+				throw new DbException("Erro ao voltar alterações! "+ e1.getMessage());
+			}
 		} finally {
 			DB.closeStatement(st);
 		}
@@ -83,7 +102,9 @@ public class UsersDaoJDBC implements UsersDao {
 		PreparedStatement st = null;
 
 		try {
-
+			
+			conn.setAutoCommit(false);
+			
 			String sql = "DELETE FROM users WHERE Id = ?";
 
 			st = conn.prepareStatement(sql);
@@ -93,10 +114,17 @@ public class UsersDaoJDBC implements UsersDao {
 
 			if (row == 0) {
 				throw new DbException("Erro ao deletar usuário");
+			} else {
+				conn.commit();
 			}
-
+		
 		} catch (SQLException e) {
-			throw new DbException(e.getMessage());
+			try {
+				conn.rollback();
+				throw new DbException("Erro ao deletar registro! Voltado alterações.  " + e.getMessage());
+			} catch (SQLException e1) {
+				throw new DbException("Erro ao voltar alterações! "+ e1.getMessage());
+			}
 		} finally {
 			DB.closeStatement(st);
 		}

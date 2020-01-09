@@ -30,6 +30,8 @@ public class SellerDaoJDBC implements SellerDao {
 		PreparedStatement st = null;
 
 		try {
+			
+			conn.setAutoCommit(false);
 
 			String sql = "INSERT INTO seller (Name, Email, BirthDate, BaseSalary, DepartmentId) VALUES (?, ?, ?, ?, ?)";
 			st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -48,14 +50,19 @@ public class SellerDaoJDBC implements SellerDao {
 					seller.setId(rs.getInt(1));
 
 				}
-
+				conn.commit();
 				DB.closeResultSet(rs);
 			} else {
 				throw new DbException("Erro inesperado. Nehuma linha alterada");
 			}
 
 		} catch (SQLException e) {
-			throw new DbException(e.getMessage());
+			try {
+				conn.rollback();
+				throw new DbException("Erro ao inserir registro! Voltado alterações.  " + e.getMessage());
+			} catch (SQLException e1) {
+				throw new DbException("Erro ao voltar alterações! "+ e1.getMessage());
+			}
 		} finally {
 			DB.closeStatement(st);
 		}
@@ -67,6 +74,8 @@ public class SellerDaoJDBC implements SellerDao {
 		PreparedStatement st = null;
 
 		try {
+			
+			conn.setAutoCommit(false);
 
 			String sql = "UPDATE seller " + 
 					"SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? " + 
@@ -79,10 +88,19 @@ public class SellerDaoJDBC implements SellerDao {
 			st.setInt(5, seller.getDepartment().getId());
 			st.setInt(6, seller.getId());
 
-			st.executeUpdate();
+			int row = st.executeUpdate();
+			
+			if (row > 0) {
+				conn.commit();
+			}
 			
 		} catch (SQLException e) {
-			throw new DbException(e.getMessage());
+			try {
+				conn.rollback();
+				throw new DbException("Erro ao alterar registro! Voltado alterações.  " + e.getMessage());
+			} catch (SQLException e1) {
+				throw new DbException("Erro ao voltar alterações! "+ e1.getMessage());
+			}
 		} finally {
 			DB.closeStatement(st);
 		}
@@ -94,6 +112,8 @@ public class SellerDaoJDBC implements SellerDao {
 
 		try {
 
+			conn.setAutoCommit(false);
+			
 			String sql = "DELETE FROM seller " + 
 					"WHERE Id = ?";
 			st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -103,10 +123,17 @@ public class SellerDaoJDBC implements SellerDao {
 			
 			if (row == 0 ) {
 				throw new DbException("Registro inexistente");
+			} else {
+				conn.commit();
 			}
 			
 		} catch (SQLException e) {
-			throw new DbException(e.getMessage());
+			try {
+				conn.rollback();
+				throw new DbException("Erro ao deletar registro! Voltado alterações.  " + e.getMessage());
+			} catch (SQLException e1) {
+				throw new DbException("Erro ao voltar alterações! "+ e1.getMessage());
+			}
 		} finally {
 			DB.closeStatement(st);
 		}
