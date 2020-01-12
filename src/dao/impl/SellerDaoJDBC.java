@@ -319,7 +319,7 @@ public class SellerDaoJDBC implements SellerDao {
 			st.setString(1, email);
 			rs = st.executeQuery();
 			
-			//testando se veio algum resultado, se true pega os dados do result e instancia os objetos
+			//testando se veio algum resultado com o mesmo e-mail a ser inserido e/ou atualizado
 			if (rs.next()) {
 				return true;	
 			}

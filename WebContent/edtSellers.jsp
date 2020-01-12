@@ -53,12 +53,10 @@
 								List<Department> list = (List<Department>) request.getAttribute("listDep");
 								for (Department d : list) {
 					%>
-
-					<option value="<%=d.getId()%>"><%=d.getName()%></option>
-
+									<option value="<%=d.getId()%>"><%=d.getName()%></option>
 					<%
+								}
 						}
-							}
 					%>
 				</select>
 

@@ -128,9 +128,7 @@ public class SellerController extends HttpServlet {
 			seller.setDepartment(dep);
 			
 			
-			SellerDao sellerDao = DaoFactory.createSellerDao();
-			seller.setDepartment(dep);
-			
+			SellerDao sellerDao = DaoFactory.createSellerDao();		
 			sellerDao.saveSeller(seller);
 			
 			response.sendRedirect("SellerController");
