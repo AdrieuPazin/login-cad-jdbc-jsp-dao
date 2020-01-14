@@ -105,11 +105,24 @@ public class SellerController extends HttpServlet {
 		
 		
 		if (acao.equals("edit_proc")) {
+			editarVendedorProc(request, response);				
+		}		
+		if (acao.equals("add_proc")) {
+			addVendedorProc(request, response);		
+		}
+		
+		
+	}
+
+
+	private void addVendedorProc(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		SellerDao sellerDao = DaoFactory.createSellerDao();
+		String email = request.getParameter("frmSellerEmail");
+
+		if(sellerDao.findByEmail(email) == false) {
 			
-			
-			Integer id = Integer.parseInt(request.getParameter("frmSellerId"));
 			String nome = request.getParameter("frmSellerName");
-			String email = request.getParameter("frmSellerEmail");
 			String birthDate = request.getParameter("frmSellerBirthDate");
 			String baseSalary = request.getParameter("frmSellerBaseSalary");
 			Integer departmentId = Integer.parseInt(request.getParameter("selectSellerDepartment"));
@@ -119,6 +132,58 @@ public class SellerController extends HttpServlet {
 			
 			
 			Seller seller = new Seller();
+			seller.setName(nome);
+			seller.setEmail(email);
+			seller.setBirthDate(seller.retornaDate(birthDate));
+			seller.setBaseSalary(Double.parseDouble(baseSalary));
+			seller.setDepartment(dep);
+			
+			
+			sellerDao.saveSeller(seller);
+			
+			response.sendRedirect("SellerController");
+		}else {
+			String invalidEmail = "<div class=\"alert alert-warning alert-dismissible fade show\" role=\"alert\">\n" + 
+					"  E-mail já existente. Por favor, tente outro e-mail!\n" + 
+					"  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" + 
+					"    <span aria-hidden=\"true\">&times;</span>\n" + 
+					"  </button>\n" + 
+					"</div>";
+			DepartmentDao depDao = DaoFactory.createDepartmentDao();
+			List<Department> listDepartment = depDao.findAll();
+			
+			request.setAttribute("invalidEmail", invalidEmail);
+			request.setAttribute("listDep", listDepartment);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("edtSellers.jsp");
+			rd.forward(request, response);
+			
+		}
+	}
+
+
+	private void editarVendedorProc(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		String email = request.getParameter("frmSellerEmail");
+		Integer id = Integer.parseInt(request.getParameter("frmSellerId"));
+		
+		SellerDao sellerDao = DaoFactory.createSellerDao();		
+		Seller seller = sellerDao.findById(id);
+
+		
+
+		if(sellerDao.findByEmail(email) && seller.getEmail().equals(email.trim()) ) {
+			
+		
+			String nome = request.getParameter("frmSellerName");
+			String birthDate = request.getParameter("frmSellerBirthDate");
+			String baseSalary = request.getParameter("frmSellerBaseSalary");
+			Integer departmentId = Integer.parseInt(request.getParameter("selectSellerDepartment"));
+			
+			DepartmentDao depDao = DaoFactory.createDepartmentDao();
+			Department dep = depDao.findById(departmentId);
+			
+			
 			seller.setId(id);
 			seller.setName(nome);
 			seller.setEmail(email);
@@ -128,42 +193,25 @@ public class SellerController extends HttpServlet {
 			seller.setDepartment(dep);
 			
 			
-			SellerDao sellerDao = DaoFactory.createSellerDao();		
 			sellerDao.saveSeller(seller);
-			
 			response.sendRedirect("SellerController");
-			
-		}
-		
-		if (acao.equals("add_proc")) {
-			
-			String nome = request.getParameter("frmSellerName");
-			String email = request.getParameter("frmSellerEmail");
-			String birthDate = request.getParameter("frmSellerBirthDate");
-			String baseSalary = request.getParameter("frmSellerBaseSalary");
-			Integer departmentId = Integer.parseInt(request.getParameter("selectSellerDepartment"));
-			
+		} else {
+			String invalidEmail = "<div class=\"alert alert-warning alert-dismissible fade show\" role=\"alert\">\n" + 
+					"  E-mail diferente do cadastro!\n" + 
+					"  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" + 
+					"    <span aria-hidden=\"true\">&times;</span>\n" + 
+					"  </button>\n" + 
+					"</div>";
 			DepartmentDao depDao = DaoFactory.createDepartmentDao();
-			Department dep = depDao.findById(departmentId);
+			List<Department> listDepartment = depDao.findAll();
 			
+			request.setAttribute("invalidEmail", invalidEmail);
+			request.setAttribute("listDep", listDepartment);
 			
-			Seller seller = new Seller();
-			seller.setName(nome);
-			seller.setEmail(email);
-			seller.setBirthDate(seller.retornaDate(birthDate));
-			seller.setBaseSalary(Double.parseDouble(baseSalary));
-			seller.setDepartment(dep);
-			
-			
-			SellerDao sellerDao = DaoFactory.createSellerDao();
-			sellerDao.saveSeller(seller);
-			
-			response.sendRedirect("SellerController");
-			
+			RequestDispatcher rd = request.getRequestDispatcher("edtSellers.jsp");
+			rd.forward(request, response);
 			
 		}
-		
-		
 	}
 
 }

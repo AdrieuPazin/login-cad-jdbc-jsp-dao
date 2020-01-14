@@ -295,7 +295,7 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void saveSeller(Seller seller) {
-		if(seller.getId() != null && seller.getId() > 0 && findByEmail(seller.getEmail()) == false) {
+		if(seller.getId() != null && seller.getId() > 0 && findByEmail(seller.getEmail())) {
 			update(seller);
 		} else if (findByEmail(seller.getEmail()) == false) {
 			insert(seller);
@@ -310,9 +310,7 @@ public class SellerDaoJDBC implements SellerDao {
 		
 		try {
 			
-			String sql = "SELECT seller.*,department.Name as DepName " + 
-					"FROM seller INNER JOIN department " + 
-					"ON seller.DepartmentId = department.Id " + 
+			String sql = "SELECT * FROM seller " + 
 					"WHERE seller.Email = ?";
 			
 			st = conn.prepareStatement(sql);

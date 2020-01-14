@@ -14,6 +14,11 @@
 <div class="container">
 
 		<%
+			String msg = (String) request.getAttribute("invalidEmail");
+			if(msg != null){
+				out.println(msg);
+			}
+		
 			if(request.getAttribute("user") != null){
 	
 				Users user = (Users) request.getAttribute("user");	
@@ -27,7 +32,7 @@
 				  </div>
 				  <div class="form-group">
 				    <label >E-mail</label>
-				    <input type="email" class="form-control" id="idfrmUserEmail" name = "frmUserEmail" placeholder="Entre com seu e-mail" value="<%= user.getEmail()%>">
+				    <input readonly type="email" class="form-control" id="idfrmUserEmail" name = "frmUserEmail" placeholder="Entre com seu e-mail" value="<%= user.getEmail()%>">
 				  </div>
 				  <div class="form-group">
 				    <label >Senha</label>

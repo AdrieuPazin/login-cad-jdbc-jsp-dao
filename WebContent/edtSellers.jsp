@@ -13,8 +13,13 @@
 <body>
 	<%@include file="./util/header.jsp"%>
 	<div class="container">
-
+	
 		<%
+			String msg = (String) request.getAttribute("invalidEmail");
+			if(msg != null){
+				out.println(msg);
+			}	
+		
 			if (request.getAttribute("seller") != null) {
 				Seller s = (Seller) request.getAttribute("seller");
 		%>
@@ -32,7 +37,7 @@
 			</div>
 			<div class="form-group">
 				<label>E-mail</label> 
-				<input type="email" class="form-control" id="idfrmSellerEmail" name="frmSellerEmail" placeholder="Entre com seu e-mail" value="<%=s.getEmail()%>">
+				<input readonly type="email" class="form-control" id="idfrmSellerEmail" name="frmSellerEmail" placeholder="Entre com seu e-mail" value="<%=s.getEmail()%>">
 			</div>
 			<div class="form-group">
 				<label>Data de nascimento</label> 
