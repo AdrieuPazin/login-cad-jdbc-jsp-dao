@@ -250,9 +250,9 @@ public class UsersDaoJDBC implements UsersDao {
 	@Override
 	public void saveUser(Users user) {
 		
-		if(user.getId() != null && user.getId() > 0 && findByEmail(user.getEmail())) {
+		if(user.getId() != null && user.getId() > 0) {
 			update(user);
-		} else if (findByEmail(user.getEmail()) == false) {
+		} else {
 			insert(user);
 		}
 		

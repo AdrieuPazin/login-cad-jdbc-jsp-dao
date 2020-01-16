@@ -295,9 +295,9 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void saveSeller(Seller seller) {
-		if(seller.getId() != null && seller.getId() > 0 && findByEmail(seller.getEmail())) {
+		if(seller.getId() != null && seller.getId() > 0) {
 			update(seller);
-		} else if (findByEmail(seller.getEmail()) == false) {
+		} else {
 			insert(seller);
 		}
 		
@@ -332,5 +332,75 @@ public class SellerDaoJDBC implements SellerDao {
 			DB.closeResultSet(rs);
 		}
 	}
+	
+	@Override	
+	public List<Seller> findAllLimit(int inicioDaBusca, int qtdeRegistrosResult){
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			String sql = "SELECT seller.*, department.Name as DepName FROM seller "
+					+ "INNER JOIN department ON seller.DepartmentId = department.Id "
+					+ "LIMIT ?,?";
+			
+			st = conn.prepareStatement(sql);
+			st.setInt(1, inicioDaBusca);
+			st.setInt(2, qtdeRegistrosResult);
+			
+			rs = st.executeQuery();
+			
+			List<Seller> list = new ArrayList<>();
+			Map<Integer,Department> map = new HashMap<>();
+			
+			while(rs.next()) {
+				
+				Department dep = map.get(rs.getInt("DepartmentId"));
+				if(dep == null) {
+					dep = inicializacaoDepartment(rs);
+					map.put(rs.getInt("DepartmentId"), dep);
+				}
+				Seller seller = inicializacaoSeller(rs, dep);
+				list.add(seller);				
+			}
+			return list;
+			
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+		
+	}
 
+	
+	@Override
+	public int countSeller() {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			String sql = "SELECT count(*) as total FROM seller";
+			
+			st = conn.prepareStatement(sql);
+			rs = st.executeQuery();
+						
+			if (rs.next()) {
+				return rs.getInt(1);
+			} else {
+				return 0;
+			}
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
+
+	
 }

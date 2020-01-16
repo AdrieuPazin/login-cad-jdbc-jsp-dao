@@ -31,6 +31,7 @@ public class SellerController extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		String acao = request.getParameter("acao");
+		String numPag = request.getParameter("numPag");
 		
 		if(acao!= null && acao.equals("add")) {
 			adicionarVendedor(request, response);
@@ -43,16 +44,40 @@ public class SellerController extends HttpServlet {
 			excluirVendedor(request, response);			
 		}
 		
-		listarSellers(request, response);
+//		listarSellers(request, response);
+		if (Integer.parseInt(numPag) > 0) {
+			
+			listarSellersPaginada(request, response, Integer.parseInt(numPag));
+			
+		} else {
+			listarSellersPaginada(request, response, 1);
+		}
 		
 		
+		
+	}
+
+
+	private void listarSellersPaginada(HttpServletRequest request, HttpServletResponse response, int numPag)
+			throws ServletException, IOException {
+		int registros = (numPag * 10) - 10;
+		
+		SellerDao sellerDao = DaoFactory.createSellerDao();
+		List<Seller> listSeller = sellerDao.findAllLimit(registros, 10);
+		
+		int qtdeRegistros = sellerDao.countSeller();
+		request.setAttribute("qtdeRegistros", qtdeRegistros);
+		request.setAttribute("listaPaginada", listSeller);
+		RequestDispatcher rq = request.getRequestDispatcher("seller.jsp");
+		rq.forward(request, response);
 	}
 
 
 	private void excluirVendedor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		SellerDao sellerDao = DaoFactory.createSellerDao();
 		sellerDao.deleteById(Integer.parseInt(request.getParameter("id")));
-		listarSellers(request, response);
+//		listarSellers(request, response);
+		listarSellersPaginada(request, response, 1);
 	}
 
 
@@ -85,16 +110,16 @@ public class SellerController extends HttpServlet {
 	}
 
 
-	private void listarSellers(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		SellerDao sellerDao = DaoFactory.createSellerDao();
-		List<Seller> lista = sellerDao.findAll();
-		
-		request.setAttribute("lista", lista);
-		
-		RequestDispatcher rd = request.getRequestDispatcher("seller.jsp");
-		rd.forward(request, response);
-	}
+//	private void listarSellers(HttpServletRequest request, HttpServletResponse response)
+//			throws ServletException, IOException {
+//		SellerDao sellerDao = DaoFactory.createSellerDao();
+//		List<Seller> lista = sellerDao.findAll();
+//		
+//		request.setAttribute("lista", lista);
+//		
+//		RequestDispatcher rd = request.getRequestDispatcher("seller.jsp");
+//		rd.forward(request, response);
+//	}
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -141,7 +166,7 @@ public class SellerController extends HttpServlet {
 			
 			sellerDao.saveSeller(seller);
 			
-			response.sendRedirect("SellerController");
+			response.sendRedirect("SellerController?numPag=1");
 		}else {
 			String invalidEmail = "<div class=\"alert alert-warning alert-dismissible fade show\" role=\"alert\">\n" + 
 					"  E-mail já existente. Por favor, tente outro e-mail!\n" + 
@@ -194,7 +219,7 @@ public class SellerController extends HttpServlet {
 			
 			
 			sellerDao.saveSeller(seller);
-			response.sendRedirect("SellerController");
+			response.sendRedirect("SellerController?numPag=1");
 		} else {
 			String invalidEmail = "<div class=\"alert alert-warning alert-dismissible fade show\" role=\"alert\">\n" + 
 					"  E-mail diferente do cadastro!\n" + 

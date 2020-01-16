@@ -13,6 +13,8 @@ public interface SellerDao {
 	Seller findById(int id);
 	boolean findByEmail(String email);
 	List<Seller> findAll();
+	List<Seller> findAllLimit(int inicioDaBusca, int qtdeRegistrosResult);
+	int countSeller();
 	List<Seller> findByDepartment(Department dep);
 	void saveSeller(Seller seller);
 	
