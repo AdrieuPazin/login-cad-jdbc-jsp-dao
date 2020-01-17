@@ -55,11 +55,11 @@
 			</tbody>
 		</table>
 
-		<nav">
+		<nav>
 			  <ul class="pagination justify-content-center">
-<!-- 			    <li class="page-item disabled"> -->
-<!-- 			      <a class="page-link" href="#" tabindex="-1">Anterior</a> -->
-<!-- 			    </li> -->
+			    <li class="page-item">
+			      <a class="page-link" href="SellerController?numPag=1" tabindex="-1">Início</a>
+			    </li>
 			    <%
 			    	//Pego o total de registros e divido por 10 que é o limit do SQL para obter o total de paginas.
 			    	//Se o resto da divisão pelo registros não for zero eu acrescento uma pagina para pegar o restante dos registros
@@ -71,11 +71,9 @@
 			    	for(int j = 1; j <= totalPaginas; j++){
 			    	
 			    %>
-				    <li class="page-item"><a class="page-link" href="SellerController?numPag=<%=j %>"><%=j %></a></li>
+				   		<li class="page-item"><a class="page-link" href="SellerController?numPag=<%=j %>"><%=j %></a></li>
 				    
-				<% } %>    
-<!-- 			      <a class="page-link" href="#">Próximo</a> -->
-			    </li>
+				<% } %> 
 			  </ul>
 		</nav>
 

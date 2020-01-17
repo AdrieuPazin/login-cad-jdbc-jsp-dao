@@ -21,8 +21,8 @@
 				aria-expanded="false"> CADASTROS </a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a class="dropdown-item" href="SellerController?numPag=0">Vendedores</a> 
-					<a class="dropdown-item" href="DepartmentController">Departamentos</a>
-					<a class="dropdown-item" href="UsersController">Usuários</a>
+					<a class="dropdown-item" href="DepartmentController?numPag=0">Departamentos</a>
+					<a class="dropdown-item" href="UsersController?numPag=0">Usuários</a>
 
 				</div></li>
 			<li class="nav-item"><a class="nav-link" href="logout.jsp">Sair</a>

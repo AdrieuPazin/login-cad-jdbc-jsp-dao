@@ -28,6 +28,7 @@ public class UsersController extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		String acao = request.getParameter("acao");
+		String numPag = request.getParameter("numPag");
 		
 		if (acao != null && acao.equals("add")) {
 			adicionarUsuario(request, response);
@@ -44,17 +45,37 @@ public class UsersController extends HttpServlet {
 		}
 		
 		
-		listarUsuarios(request, response);
+		if (Integer.parseInt(numPag) > 0) {
+			
+			listarUsersPaginada(request, response, Integer.parseInt(numPag));
+			
+		} else {
+			listarUsersPaginada(request, response, 1);
+		}
 		
 		
 	
 	}
 
+	private void listarUsersPaginada(HttpServletRequest request, HttpServletResponse response, int numPag) throws ServletException, IOException {
+		int registros = (numPag * 10) - 10;
+		
+		UsersDao usersDao = DaoFactory.createUsersDao();
+		List<Users> listUsers = usersDao.findAllLimite(registros, 10);
+		
+		int qtdeRegistros = usersDao.countSeller();
+		request.setAttribute("qtdeRegistros", qtdeRegistros);
+		request.setAttribute("listaPaginada", listUsers);
+		RequestDispatcher rq = request.getRequestDispatcher("users.jsp");
+		rq.forward(request, response);
+	}
+
+
 	private void excluirUsuario(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		UsersDao userDao = DaoFactory.createUsersDao();
 		userDao.deleteById(Integer.parseInt(request.getParameter("id")));
 		
-		listarUsuarios(request, response);
+		listarUsersPaginada(request, response, 1);
 	}
 
 	private void editarUsuario(HttpServletRequest request, HttpServletResponse response)
@@ -76,16 +97,16 @@ public class UsersController extends HttpServlet {
 		rd.forward(request, response);
 	}
 
-	private void listarUsuarios(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		UsersDao userDao = DaoFactory.createUsersDao();
-		List<entities.Users> lista = userDao.findAll();
-		
-		request.setAttribute("lista", lista);
-		
-		RequestDispatcher rd = request.getRequestDispatcher("users.jsp");
-		rd.forward(request, response);
-	}
+//	private void listarUsuarios(HttpServletRequest request, HttpServletResponse response)
+//			throws ServletException, IOException {
+//		UsersDao userDao = DaoFactory.createUsersDao();
+//		List<entities.Users> lista = userDao.findAll();
+//		
+//		request.setAttribute("lista", lista);
+//		
+//		RequestDispatcher rd = request.getRequestDispatcher("users.jsp");
+//		rd.forward(request, response);
+//	}
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -116,7 +137,7 @@ public class UsersController extends HttpServlet {
 			
 			userDao.saveUser(user);
 			
-			response.sendRedirect("UsersController");
+			response.sendRedirect("UsersController?numPag=1");
 			
 		}else {
 			String invalidEmail = "<div class=\"alert alert-warning alert-dismissible fade show\" role=\"alert\">\n" + 
@@ -151,7 +172,7 @@ public class UsersController extends HttpServlet {
 			
 			userDao.saveUser(user);
 			
-			response.sendRedirect("UsersController");
+			response.sendRedirect("UsersController?numPag=1");
 			
 		} else {
 			String invalidEmail = "<div class=\"alert alert-warning alert-dismissible fade show\" role=\"alert\">\n" + 

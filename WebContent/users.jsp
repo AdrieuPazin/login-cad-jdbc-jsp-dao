@@ -34,7 +34,7 @@
 			<tbody>
 	<%		
 		int i = 1;
-		List<Users> lista = (List<Users>) request.getAttribute("lista");
+		List<Users> lista = (List<Users>) request.getAttribute("listaPaginada");
 			for(Users u: lista){
 
     %>
@@ -74,7 +74,27 @@
 			</tbody>
 		</table>
 
-
+		<nav>
+			  <ul class="pagination justify-content-center">
+			    <li class="page-item">
+			      <a class="page-link" href="UsersController?numPag=1" tabindex="-1">Início</a>
+			    </li>
+			    <%
+			    	//Pego o total de registros e divido por 10 que é o limit do SQL para obter o total de paginas.
+			    	//Se o resto da divisão pelo registros não for zero eu acrescento uma pagina para pegar o restante dos registros
+			    	int totalRegistros = (Integer) request.getAttribute("qtdeRegistros");
+			    	int totalPaginas = totalRegistros / 10;
+			    	if(totalRegistros % 10 != 0){
+			    		totalPaginas++;
+			    	}
+			    	for(int j = 1; j <= totalPaginas; j++){
+			    	
+			    %>
+				   		<li class="page-item"><a class="page-link" href="UsersController?numPag=<%=j %>"><%=j %></a></li>
+				    
+				<% } %> 
+			  </ul>
+		</nav>
 
 
 	</div>

@@ -3,6 +3,7 @@ package dao;
 import java.util.List;
 
 import entities.Department;
+import entities.Users;
 
 public interface DepartmentDao {
 
@@ -11,5 +12,7 @@ public interface DepartmentDao {
 	void deleteById(int id);
 	Department findById(int id);
 	List<Department> findAll();
+	List<Department> findAllLimite(int inicioDaBusca, int qtdeRegistrosResult);
+	int countSeller();
 	void salvarDepartment(Department dep);
 }

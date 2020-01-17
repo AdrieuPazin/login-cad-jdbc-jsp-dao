@@ -12,6 +12,8 @@ public interface UsersDao {
 	Users findById(int id);
 	boolean findByEmail(String email);
 	List<Users> findAll();
+	List<Users> findAllLimite(int inicioDaBusca, int qtdeRegistrosResult);
+	int countSeller();
 	Users findByLogin(String email, String pass);
 	void saveUser(Users user);
 	

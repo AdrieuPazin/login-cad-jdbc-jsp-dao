@@ -29,7 +29,8 @@ public class DepartmentController extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 
 		String acao = request.getParameter("acao");
-
+		String numPag = request.getParameter("numPag");
+		
 		if (acao != null && acao.equals("exc")) {
 			excluirDepartment(request, response);
 		}
@@ -42,8 +43,28 @@ public class DepartmentController extends HttpServlet {
 			adicionarDepartment(request, response);
 		}
 
-		listarDepartment(request, response);
+		if (Integer.parseInt(numPag) > 0) {
+			
+			listarDepartmentPaginada(request, response, Integer.parseInt(numPag));
+			
+		} else {
+			listarDepartmentPaginada(request, response, 1);
+		}
 
+	}
+
+	private void listarDepartmentPaginada(HttpServletRequest request, HttpServletResponse response, int numPag) throws ServletException, IOException {
+		int registros = (numPag * 10) - 10;
+		
+		DepartmentDao depDao = DaoFactory.createDepartmentDao();
+		List<Department> listDep = depDao.findAllLimite(registros, 10);
+		
+		int qtdeRegistros = depDao.countSeller();
+		request.setAttribute("qtdeRegistros", qtdeRegistros);
+		request.setAttribute("listaPaginada", listDep);
+		RequestDispatcher rq = request.getRequestDispatcher("department.jsp");
+		rq.forward(request, response);
+		
 	}
 
 	private void adicionarDepartment(HttpServletRequest request, HttpServletResponse response)
@@ -53,16 +74,16 @@ public class DepartmentController extends HttpServlet {
 		rd.forward(request, response);
 	}
 
-	private void listarDepartment(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		DepartmentDao depDao = DaoFactory.createDepartmentDao();
-		List<Department> list = depDao.findAll();
-
-		request.setAttribute("listDep", list);
-
-		RequestDispatcher rq = request.getRequestDispatcher("department.jsp");
-		rq.forward(request, response);
-	}
+//	private void listarDepartment(HttpServletRequest request, HttpServletResponse response)
+//			throws ServletException, IOException {
+//		DepartmentDao depDao = DaoFactory.createDepartmentDao();
+//		List<Department> list = depDao.findAll();
+//
+//		request.setAttribute("listDep", list);
+//
+//		RequestDispatcher rq = request.getRequestDispatcher("department.jsp");
+//		rq.forward(request, response);
+//	}
 
 	private void editarDepartment(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -88,7 +109,7 @@ public class DepartmentController extends HttpServlet {
 		List<Seller> list = sellerdao.findByDepartment(dep);
 		if (list.isEmpty()) {
 			depDao.deleteById(id);
-			listarDepartment(request, response);
+			listarDepartmentPaginada(request, response, 1);
 		}
 
 	}
@@ -112,7 +133,7 @@ public class DepartmentController extends HttpServlet {
 
 			depDao.salvarDepartment(dep);
 
-			response.sendRedirect("DepartmentController");
+			response.sendRedirect("DepartmentController?numPag=1");
 
 		}
 
@@ -127,7 +148,7 @@ public class DepartmentController extends HttpServlet {
 
 			depDao.salvarDepartment(dep);
 
-			response.sendRedirect("DepartmentController");
+			response.sendRedirect("DepartmentController?numPag=1");
 
 		}
 

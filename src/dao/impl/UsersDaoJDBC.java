@@ -6,9 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import dao.UsersDao;
 import db.DB;
@@ -186,19 +184,10 @@ public class UsersDaoJDBC implements UsersDao {
 			rs = st.executeQuery();
 
 			List<Users> listUsers = new ArrayList<>();
-			Map<Integer, Users> map = new HashMap<>();
 			while (rs.next()) {
 
-				Users user = map.get(rs.getInt("Id"));
-
-				if (user == null) {
-					user = inicializaUsers(rs);
-					map.put(rs.getInt("Id"), user);
-					listUsers.add(user);
-				} else {
-					user = inicializaUsers(rs);
-					listUsers.add(user);
-				}
+				Users user = inicializaUsers(rs);
+				listUsers.add(user);
 
 			}
 			return listUsers;
@@ -286,6 +275,68 @@ public class UsersDaoJDBC implements UsersDao {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
+	}
+
+	@Override
+	public List<Users> findAllLimite(int inicioDaBusca, int qtdeRegistrosResult) {
+		
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			String sql = "SELECT * FROM users LIMIT ?,?";
+			
+			st = conn.prepareStatement(sql);
+			st.setInt(1, inicioDaBusca);
+			st.setInt(2, qtdeRegistrosResult);
+			
+			rs = st.executeQuery();
+			
+			List<Users> list = new ArrayList<>();
+			while (rs.next()) {
+				Users u = inicializaUsers(rs);
+				list.add(u);				
+			}
+			return list;
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+		
+		
+	}
+
+	@Override
+	public int countSeller() {
+		
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			String sql = "SELECT count(*) as total FROM users";
+		
+			st = conn.prepareStatement(sql);
+			rs = st.executeQuery();
+			
+			if(rs.next()) {
+				return rs.getInt(1);
+			} else {
+				return 0;
+			}
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+		
+		
 	}
 
 }

@@ -223,4 +223,63 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 		
 	}
 
+	
+	@Override
+	public List<Department> findAllLimite(int inicioDaBusca, int qtdeRegistrosResult) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			String sql = "SELECT * FROM department LIMIT ?,?";
+			
+			st = conn.prepareStatement(sql);
+			st.setInt(1, inicioDaBusca);
+			st.setInt(2, qtdeRegistrosResult);
+			
+			rs = st.executeQuery();
+			
+			List<Department> list = new ArrayList<>();
+			while (rs.next()) {
+				Department d = inicializarDepartment(rs);
+				list.add(d);				
+			}
+			return list;
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+		
+	}
+
+	@Override
+	public int countSeller() {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			String sql = "SELECT count(*) as total FROM department";
+		
+			st = conn.prepareStatement(sql);
+			rs = st.executeQuery();
+			
+			if(rs.next()) {
+				return rs.getInt(1);
+			} else {
+				return 0;
+			}
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+		
+	}
+
 }
